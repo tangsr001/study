@@ -48,6 +48,50 @@ module.exports ={
 `
 首先修改入口文件地址为 examples 下的main.js ,其次将packages 打包编译任务当中
 
-接下编写组件代买
+接下编写组件
+首先我们拿一个 Button 组件来示范，这里只实现一个比较简单的组件，我们在packages 目录下新建一个 Button 目录，然后src 里存在组件的源代码
+`  
+ <template>
+   <div class="x-button">
+     <slot></slot>
+   </div>
+ </template>
+ <script>
+export default {
+  name: 'x-button',
+  props: {
+    type: String
+  }
+}
+</script>
+
+<style scoped>
+  .x-button {
+      display: inline-block;
+      padding: 3px 6px;
+      background: #000;
+      color: #fff;
+  }
+</style>
+
+`
+vue 和 react组件设计会大量的应用插槽机制，比如vue 里的 slot 标签，react 的 children 等，所以这一块需要关注
+接着在button 里面的index.js 编写 vue 的安装
+
+`
+// 导入组件，组件必须声明 name
+import XButton from './src'
+
+// 为组件提供 install 安装方法，供按需引入
+XButton.install = function (Vue) {
+  Vue.component(XButton.name, XButton)
+}
+
+// 导出组件
+export default XButton
+
+`
 https://juejin.cn/post/6844904085808742407#heading-4
+
+ 
 

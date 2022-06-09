@@ -50,5 +50,25 @@ call() 方法在使用一个指向的 this 的和若干个指定的参数的前�
     delete context.fn
 }
 `
+接下来我们来实现 apply ,直接一步到位
+
+`
+  Function.prototype.apply2 = function(context){
+     let context = context || window
+     context.fn = this
+     let parmArray = []
+     if(context.slice(1,2).length>0){
+        parmArray = context.slice(1,2)
+        context.fn(...parmArray)
+     }esle{
+        context.fn()
+     }
+     delete context.fn()
+  }
+`
+
+
+
+
 
 

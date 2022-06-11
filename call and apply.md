@@ -68,7 +68,36 @@ call() 方法在使用一个指向的 this 的和若干个指定的参数的前�
 `
 
 
+最后我们来实现一下 bind()
+`
+       Function.prototype.newBind = function(){
+        // 目标对象  
+        var target = arguments[0] || window
+        // 构造函数的 this 环境
+        var self = this;
+        
+        //newBind 的形参数列表，去掉target。
+        var args = [].slice.call(arguments,1);
+        var temp = function(){};
+        
+        // 创建一个新函数 newFn
+        var newFn = function(){
+            // 新函数的参数列表
+            var _args = [].slice.call(arguments,0);
+            //判断执行函数是否是构造函数执行的，是的话就用this，
+            //若不是通过new的方式来执行，而是直接执行的话，就用target
+            return self.apply(this instanceof temp ? this : target, args.concat(_args));
+        }
+        
+        //让this(-->f show(){})和newFn形成关联，确保原型链不被破坏。
+        temp.prototype = this.prototype;
+        // 保证返回的函数this 指向 target
+        newFn.prototype = new temp();
 
+        //返回新函数
+        return newFn;
+    }
+`
 
 
 
